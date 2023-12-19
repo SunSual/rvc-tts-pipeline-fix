@@ -9,6 +9,7 @@ import numpy as np
 import yaml
 import pkg_resources
 import logging
+from huggingface_hub import hf_hub_download
 
 from multiprocessing import cpu_count
 from vc_infer_pipeline import VC
@@ -18,6 +19,8 @@ from lib.audio import load_audio
 from fairseq import checkpoint_utils
 from scipy.io import wavfile
 
+
+directory = ""
 
 class Config:
     def __init__(self,device,is_half):
@@ -42,13 +45,13 @@ class Config:
                 print("16系/10系显卡和P40强制单精度")
                 self.is_half = False
                 for config_file in ["32k.json", "40k.json", "48k.json"]:
-                    with open(f"configs/{config_file}", "r") as f:
+                    with open(os.path.join(directory, f"configs/{config_file}"), "r") as f:
                         strr = f.read().replace("true", "false")
-                    with open(f"configs/{config_file}", "w") as f:
+                    with open(os.path.join(directory, f"configs/{config_file}"), "w") as f:
                         f.write(strr)
-                with open("trainset_preprocess_pipeline_print.py", "r") as f:
+                with open(os.path.join(directory, "trainset_preprocess_pipeline_print.py"), "r") as f:
                     strr = f.read().replace("3.7", "3.0")
-                with open("trainset_preprocess_pipeline_print.py", "w") as f:
+                with open(os.path.join(directory, "trainset_preprocess_pipeline_print.py"), "w") as f:
                     f.write(strr)
             else:
                 self.gpu_name = None
@@ -60,9 +63,9 @@ class Config:
                 + 0.4
             )
             if self.gpu_mem <= 4:
-                with open("trainset_preprocess_pipeline_print.py", "r") as f:
+                with open(os.path.join(directory, "trainset_preprocess_pipeline_print.py"), "r") as f:
                     strr = f.read().replace("3.7", "3.0")
-                with open("trainset_preprocess_pipeline_print.py", "w") as f:
+                with open(os.path.join(directory, "trainset_preprocess_pipeline_print.py"), "w") as f:
                     f.write(strr)
         elif torch.backends.mps.is_available():
             print("没有发现支持的N卡, 使用MPS进行推理")
@@ -124,7 +127,10 @@ def load_hubert(file_path="hubert_base.pt"):
         file_fath (str) : Direct path location to the hubert_base.  If not specified, defaults to top level directory.
     '''
     global hubert_model
+    if not os.path.exists(file_path):
+        hf_hub_download(repo_id="lj1995/VoiceConversionWebUI", filename="hubert_base.pt", local_dir=".", token=False)
     file_path = file_path
+
     models, _, _ = checkpoint_utils.load_model_ensemble_and_task(
         [file_path],
         suffix="",
@@ -244,6 +250,7 @@ def load_config():
     return rvc_conf
 
 def rvc_convert(model_path,
+            rvc_path,
             f0_up_key=0,
             input_path=None, 
             output_dir_path=None,
@@ -280,14 +287,17 @@ def rvc_convert(model_path,
         output_file_path (str) : file path and name of tshe output wav file
 
     '''
-    global config, now_dir, hubert_model, tgt_sr, net_g, vc, cpt, device, is_half, version
-    
+    global config, now_dir, hubert_model, tgt_sr, net_g, vc, cpt, device, is_half, version, directory
+    directory = rvc_path
+    if not os.path.exists("rmvpe.pt"):
+        hf_hub_download(repo_id="lj1995/VoiceConversionWebUI", filename="rmvpe.pt", local_dir=".", token=False)
+
     if torch.cuda.is_available():
         device = "cuda:0"
     elif torch.backends.mps.is_available():
         device = "mps:0"
     else:
-        print("Cuda or MPS not detected")
+        print("Cuda or MPS not detected, but they are required")
 
     if not verbose:
         logging.getLogger('fairseq').setLevel(logging.ERROR)
@@ -328,7 +338,7 @@ def rvc_convert(model_path,
 
 def main():
     # Need to comment out yaml setting for input audio
-    rvc_convert(model_path="models\\ado.pth", input_path="delilah.wav")
+    rvc_convert(model_path="models\\DenVot.pth", input_path="out.wav", rvc_path="src/rvc")
 
 if __name__ == "__main__":
     main()
