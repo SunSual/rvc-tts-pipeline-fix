@@ -15,8 +15,6 @@ To get this to work, pytorch must be installed first on the system to allow RVC 
 pip install -e git+https://github.com/JarodMica/rvc.git#egg=rvc
 ```
 
-3. Lastly, you need to get the ```hubert_base.pt``` and ```rmvpe.pt``` files from rvc and put them into the parent directory of whatever project you're working on (or the SAME location of whereever you're running the scripts)
-
 **If you want to install rvc-tts-pipeline as it's own package, run the following (recommended)**
 
 ```
