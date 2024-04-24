@@ -6,4 +6,5 @@ setup(
     description='tts-pipeline',
     author='Jarod Mica',
     packages=find_packages(),
+    scripts=['rvc_tts_pipeline/rvc_infer.py']
 )
