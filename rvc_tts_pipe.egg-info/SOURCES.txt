@@ -1,9 +1,0 @@
-LICENSE
-README.md
-setup.py
-rvc_tts_pipe.egg-info/PKG-INFO
-rvc_tts_pipe.egg-info/SOURCES.txt
-rvc_tts_pipe.egg-info/dependency_links.txt
-rvc_tts_pipe.egg-info/top_level.txt
-rvc_tts_pipeline/__init__.py
-rvc_tts_pipeline/rvc_infer.py
