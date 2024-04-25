@@ -128,7 +128,7 @@ def load_hubert(file_path="hubert_base.pt"):
     '''
     global hubert_model
     if not os.path.exists(file_path):
-        hf_hub_download(repo_id="lj1995/VoiceConversionWebUI", filename="hubert_base.pt", local_dir=".", token=False)
+        hf_hub_download(repo_id="lj1995/VoiceConversionWebUI", filename="hubert_base.pt", token=False)
     file_path = file_path
 
     models, _, _ = checkpoint_utils.load_model_ensemble_and_task(
@@ -290,7 +290,7 @@ def rvc_convert(model_path,
     global config, now_dir, hubert_model, tgt_sr, net_g, vc, cpt, device, is_half, version, directory
     directory = rvc_path
     if not os.path.exists("rmvpe.pt"):
-        hf_hub_download(repo_id="lj1995/VoiceConversionWebUI", filename="rmvpe.pt", local_dir=".", token=False)
+        hf_hub_download(repo_id="lj1995/VoiceConversionWebUI", filename="rmvpe.pt", token=False)
 
     if torch.cuda.is_available():
         device = "cuda:0"
