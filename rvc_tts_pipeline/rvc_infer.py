@@ -163,6 +163,7 @@ def vc_single(
     if input_audio_path is None:
         return "You need to upload an audio", None
     f0_up_key = int(f0_up_key)
+    raise RuntimeError(f"Failed to load audio: {input_audio_path}")
     audio = load_audio(input_audio_path, 16000)
     audio_max = np.abs(audio).max() / 0.95
     if audio_max > 1:
