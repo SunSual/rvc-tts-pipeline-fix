@@ -120,13 +120,18 @@ def create_directory(name):
     dir_name = get_path(name)
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
-        
+
+cached_hubert_model = None
+
 def load_hubert(file_path="hubert_base.pt"):
     '''
     Args:
         file_fath (str) : Direct path location to the hubert_base.  If not specified, defaults to top level directory.
     '''
-    global hubert_model
+    global hubert_model, cached_hubert_model
+    if cached_hubert_model is not None:
+        hubert_model = cached_hubert_model
+    
     if not os.path.exists(os.path.join(os.getcwd(), file_path)):
         hf_hub_download(repo_id="lj1995/VoiceConversionWebUI", filename="hubert_base.pt", local_dir=os.getcwd(), token=False)
     file_path = file_path
@@ -142,6 +147,7 @@ def load_hubert(file_path="hubert_base.pt"):
     else:
         hubert_model = hubert_model.float()
     hubert_model.eval()
+    cached_hubert_model = hubert_model
 
 def vc_single(
     sid,
@@ -343,7 +349,7 @@ def rvc_convert(model_path,
     now_dir=os.getcwd()
     sys.path.append(now_dir)
 
-    #hubert_model=None
+    hubert_model=None
 
     get_vc(model_path)
     wav_opt=vc_single(0,input_path,f0_up_key,None,f0method,file_index,file_index2,index_rate,filter_radius,resample_sr,rms_mix_rate,protect)
