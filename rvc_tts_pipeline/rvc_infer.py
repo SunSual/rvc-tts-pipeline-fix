@@ -209,8 +209,15 @@ def vc_single(
     )
     return audio_opt
 
+last_model_path = ''
+cached_net_g = None
+
 def get_vc(model_path):
     global n_spk,tgt_sr,net_g,vc,cpt,device,is_half, version
+    if last_model_path == model_path and cached_net_g is not None:
+        print("using cached pth %s"%model_path)
+        net_g = cached_net_g
+        return
     print("loading pth %s"%model_path)
     cpt = torch.load(model_path, map_location="cpu")
     tgt_sr = cpt["config"][-1]
@@ -238,6 +245,7 @@ def get_vc(model_path):
     else:net_g = net_g.float()
     vc = VC(tgt_sr, config)
     n_spk=cpt["config"][-3]
+    cached_net_g = net_g
     # return {"visible": True,"maximum": n_spk, "__type__": "update"}
 
 def load_config():
