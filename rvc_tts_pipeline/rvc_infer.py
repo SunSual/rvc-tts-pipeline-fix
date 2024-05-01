@@ -217,6 +217,7 @@ def get_vc(model_path):
     if last_model_path == model_path and cached_net_g is not None:
         print("using cached pth %s"%model_path)
         net_g = cached_net_g
+        vc = VC(tgt_sr, config)
         return
     last_model_path = model_path
     print("loading pth %s"%model_path)
