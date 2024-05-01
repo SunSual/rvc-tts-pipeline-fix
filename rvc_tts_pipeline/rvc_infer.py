@@ -121,16 +121,12 @@ def create_directory(name):
     if not os.path.exists(dir_name):
         os.makedirs(dir_name)
 
-cached_hubert_model = None
-
 def load_hubert(file_path="hubert_base.pt"):
     '''
     Args:
         file_fath (str) : Direct path location to the hubert_base.  If not specified, defaults to top level directory.
     '''
-    global hubert_model, cached_hubert_model
-    if cached_hubert_model is not None:
-        hubert_model = cached_hubert_model
+    global hubert_model
     
     if not os.path.exists(os.path.join(os.getcwd(), file_path)):
         hf_hub_download(repo_id="lj1995/VoiceConversionWebUI", filename="hubert_base.pt", local_dir=os.getcwd(), token=False)
