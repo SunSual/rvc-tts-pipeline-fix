@@ -273,7 +273,8 @@ def rvc_convert(model_path,
             resample_sr=0,
             rms_mix_rate=0.5,
             protect=0.33,
-            verbose=False
+            verbose=False,
+            output_filename = "out.wav"
           ):  
     '''
     Function to call for the rvc voice conversion.  All parameters are the same present in that of the webui
@@ -316,8 +317,8 @@ def rvc_convert(model_path,
     is_half = _is_half
 
     if output_dir_path == None:
-        output_dir_path = "output"
-        output_file_name = "out.wav"
+        output_dir_path = "temp"
+        output_file_name = output_filename
         output_dir = os.getcwd()
         output_file_path = os.path.join(output_dir,output_dir_path, output_file_name)
     else:
