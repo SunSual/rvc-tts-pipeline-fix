@@ -213,7 +213,7 @@ last_model_path = ''
 cached_net_g = None
 
 def get_vc(model_path):
-    global n_spk,tgt_sr,net_g,vc,cpt,device,is_half, version
+    global n_spk,tgt_sr,net_g,vc,cpt,device,is_half, version, last_model_path, cached_net_g
     if last_model_path == model_path and cached_net_g is not None:
         print("using cached pth %s"%model_path)
         net_g = cached_net_g
