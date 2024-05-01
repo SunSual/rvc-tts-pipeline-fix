@@ -317,7 +317,7 @@ def rvc_convert(model_path,
     is_half = _is_half
 
     if output_dir_path == None:
-        if output_filename != "out.wav":
+        if output_filename != None:
             output_file_path = output_filename
         else:
             output_dir_path = "temp"
@@ -325,9 +325,8 @@ def rvc_convert(model_path,
             output_dir = os.getcwd()
             output_file_path = os.path.join(output_dir,output_dir_path, output_file_name)
     else:
-        # Mainly for Jarod's Vivy project, specify entire path + wav name
-        output_file_path = output_dir_path
-        pass
+        output_file_name = "out.wav"
+        output_file_path = os.path.join(output_dir_path, output_file_name)
 
     create_directory(output_dir_path)
     output_dir = get_path(output_dir_path)
@@ -341,7 +340,7 @@ def rvc_convert(model_path,
     now_dir=os.getcwd()
     sys.path.append(now_dir)
 
-    hubert_model=None
+    #hubert_model=None
 
     get_vc(model_path)
     wav_opt=vc_single(0,input_path,f0_up_key,None,f0method,file_index,file_index2,index_rate,filter_radius,resample_sr,rms_mix_rate,protect)
