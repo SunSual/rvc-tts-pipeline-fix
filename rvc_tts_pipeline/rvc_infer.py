@@ -218,6 +218,7 @@ def get_vc(model_path):
         print("using cached pth %s"%model_path)
         net_g = cached_net_g
         return
+    last_model_path = model_path
     print("loading pth %s"%model_path)
     cpt = torch.load(model_path, map_location="cpu")
     tgt_sr = cpt["config"][-1]
