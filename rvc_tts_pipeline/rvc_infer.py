@@ -325,8 +325,11 @@ def rvc_convert(model_path,
             output_dir = os.getcwd()
             output_file_path = os.path.join(output_dir,output_dir_path, output_file_name)
     else:
-        output_file_name = "out.wav"
-        output_file_path = os.path.join(output_dir_path, output_file_name)
+        if output_filename != None:
+            output_file_path = output_filename
+        else:
+            output_file_name = "out.wav"
+            output_file_path = os.path.join(output_dir_path, output_file_name)
 
     create_directory(output_dir_path)
     output_dir = get_path(output_dir_path)
