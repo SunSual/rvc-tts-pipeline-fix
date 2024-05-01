@@ -143,7 +143,6 @@ def load_hubert(file_path="hubert_base.pt"):
     else:
         hubert_model = hubert_model.float()
     hubert_model.eval()
-    cached_hubert_model = hubert_model
 
 def vc_single(
     sid,
