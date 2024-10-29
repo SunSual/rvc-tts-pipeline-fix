@@ -319,7 +319,8 @@ def rvc_convert(model_path,
 
     if output_dir_path == None:
         if output_filename != None:
-            output_file_path = output_filename
+            output_dir = os.getcwd()
+            output_file_path = os.path.join(output_dir, output_filename)
         else:
             if not os.path.exists('temp'):
                 os.mkdir('temp')
@@ -329,13 +330,14 @@ def rvc_convert(model_path,
             output_file_path = os.path.join(output_dir,output_dir_path, output_file_name)
     else:
         if output_filename != None:
-            output_file_path = output_filename
+            output_dir = os.getcwd()
+            output_file_path = os.path.join(output_dir, output_filename)
         else:
             output_file_name = "out.wav"
             output_file_path = os.path.join(output_dir_path, output_file_name)
 
-    create_directory(output_dir_path)
-    output_dir = get_path(output_dir_path)
+    # create_directory(output_dir_path)
+    # output_dir = get_path(output_dir_path)
 
     if(is_half.lower() == 'true'):
         is_half = True
